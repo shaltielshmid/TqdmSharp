@@ -37,7 +37,7 @@ namespace TqdmSharp {
             private int _smoothCount = 50;
             private int _prevIterations = 0;
             private int _prevLength = 0;
-
+            
             // Theme and output
             private readonly string _rightPad = "|";
             private char[] _themeBars;
@@ -216,11 +216,13 @@ namespace TqdmSharp {
                 double fills = (double)current / _total * _width;
                 int ifills = (int)fills;
 
+                // Store the beginning of the line, so we can move back there for the next print
+                int curCursorTop = Console.CursorTop;
+
                 // Build our output string
                 // Start by typing "backspace" over the previous print, and then add a \r in case anything was added. 
                 var sb = new StringBuilder();
-                sb.Append(new string('\b', _prevLength) + "\r");
-
+                
                 // Append the total number of filled bars
                 if (_useColor) sb.Append("\u001b[32m ");
                 sb.Append(new string(_themeBars[8], ifills));
@@ -241,8 +243,12 @@ namespace TqdmSharp {
 
                 // Finally, if there is one, print the label
                 sb.Append(_label);
+                sb.Append(' ');
                 if (_useColor) sb.Append("\u001b[0m\u001b[32m\u001b[0m ");
-                Console.Write(sb.ToString());
+                Console.Write(sb.ToString() + new string(' ', Math.Max(0, _prevLength - sb.Length)));
+
+                // Move the cursor position back
+                Console.SetCursorPosition(0, curCursorTop);
 
                 // Store the length of the string so that we can clear it later
                 _prevLength = sb.Length;
@@ -253,7 +259,12 @@ namespace TqdmSharp {
             /// </summary>
             /// <param name="text">The text to be printed on the new line.</param>
             public void PrintLine(string text) {
-                Console.WriteLine($"{new string('\b', _prevIterations)}\r{text}");
+                // Clear the previous line by resetting the cursor position and overwriting with spaces
+                Console.Write(new string(' ', Math.Min(_prevLength, Console.BufferWidth - 1))); // Clear the buffer
+                Console.CursorLeft = 0;
+                
+                // Print the new line of text
+                Console.WriteLine(text);
                 _prevLength = 0;
             }
         }
