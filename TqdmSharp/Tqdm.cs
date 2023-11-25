@@ -58,8 +58,8 @@ namespace TqdmSharp {
                 _stopWatch = Stopwatch.StartNew();
                 _startTime = DateTime.Now;
                 _prevTime = DateTime.Now;
-                _timeDeque = [];
-                _iterDeque = [];
+                _timeDeque = new();
+                _iterDeque = new();
 
                 _useExponentialMovingAverage = useExpMovingAvg;
                 _alpha = alpha;
@@ -106,14 +106,14 @@ namespace TqdmSharp {
             /// Sets the progress bar theme to basic characters of spaces + '#'.
             /// </summary>
             public void SetThemeBasic() {
-                _themeBars = [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#'];
+                _themeBars = new[] { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', '#' };
             }
 
             /// <summary>
             /// Sets the progress bar theme to ASCII characters.
             /// </summary>
             public void SetThemeAscii() {
-                _themeBars = [' ', '.', ':', '-', '=', '≡', '#', '█', '█'];
+                _themeBars = new[] { ' ', '.', ':', '-', '=', '≡', '#', '█', '█' };
             }
 
             /// <summary>
