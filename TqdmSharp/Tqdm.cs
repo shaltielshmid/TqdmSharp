@@ -23,6 +23,7 @@ namespace TqdmSharp {
             private readonly bool _useColor;
             // Total is set initially, but can be dynamically updated with each step
             private int _total;
+            private int _current;
 
             // State
             private readonly Stopwatch _stopWatch;
@@ -90,8 +91,10 @@ namespace TqdmSharp {
                 // Reset config
                 _period = 1;
                 _nUpdates = 0;
+                _current = 0;
                 _total = 0;
                 _label = "";
+                _prevLength = 0;
             }
 
             /// <summary>
@@ -156,6 +159,7 @@ namespace TqdmSharp {
             /// </summary>
             /// <param name="current">The current progress.</param>
             public void Progress(int current) {
+                this._current = current;
                 // _period is a number which is contantly tuned based on how often there are updates,
                 // to try and update the screen ~N times a second (parameter)
                 if (current % _period != 0) return;
@@ -252,6 +256,15 @@ namespace TqdmSharp {
 
                 // Store the length of the string so that we can clear it later
                 _prevLength = sb.Length;
+            }
+
+            /// <summary>
+            /// Advances the progress bar by one step, automatically updating the progress count internally.
+            /// This method is useful for scenarios where the progress is incremented in a regular manner
+            /// and eliminates the need for external progress tracking.
+            /// </summary>
+            public void Step() {
+                Progress(_current + 1);
             }
 
             /// <summary>

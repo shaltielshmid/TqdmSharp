@@ -60,9 +60,11 @@ Directly use the ProgressBar class for more control and customization over the p
 int count = 10;
 var bar = new Tqdm.ProgressBar(total: count);
 for (int i = 0; i < count; i++) {
-    bar.Progress(i);
+    bar.Progress(i); // Can be replaced with bar.Step() to increase counter by 1. 
+
     // Custom operation
 }
+bar.Finish();
 ```
 
 ### Dynamically Updating the Total Counter
@@ -75,6 +77,7 @@ for (int i = 0; i < count; i++) {
     bar.Progress(i, count);
     // Adjusted operation based on new count
 }
+bar.Finish();
 ```
 
 ### Exploring Additional Parameters
