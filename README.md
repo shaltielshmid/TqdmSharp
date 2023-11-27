@@ -16,12 +16,12 @@ TqdmSharp is a C# implementation of the tqdm progress bar, providing an easy-to-
 
 ### .NET CLI
 ```bash
-dotnet add package MinHashSharp
+dotnet add package TqdmSharp
 ```
 
 ### NuGet Package Manager
 ```powershell
-Install-Package MinHashSharp
+Install-Package TqdmSharp
 ```
 
 ## Usage Examples
