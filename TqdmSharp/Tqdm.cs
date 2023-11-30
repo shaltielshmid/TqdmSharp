@@ -79,7 +79,7 @@ namespace TqdmSharp {
             /// </summary>
             public void Reset() {
                 // Reset counters
-                _stopWatch.Reset();
+                _stopWatch.Restart();
                 _startTime = DateTime.Now;
                 _prevTime = DateTime.Now;
                 _prevIterations = 0;
