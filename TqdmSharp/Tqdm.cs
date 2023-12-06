@@ -65,6 +65,7 @@ namespace TqdmSharp {
                 _useExponentialMovingAverage = useExpMovingAvg;
                 _alpha = alpha;
                 _total = total;
+                _current = -1;
                 _width = width;
                 _printsPerSecond = printsPerSecond;
                 _useColor = useColor;
@@ -91,7 +92,7 @@ namespace TqdmSharp {
                 // Reset config
                 _period = 1;
                 _nUpdates = 0;
-                _current = 0;
+                _current = -1;
                 _total = 0;
                 _label = "";
                 _prevLength = 0;

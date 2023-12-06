@@ -17,12 +17,12 @@
     <PackageProjectUrl>https://github.com/shaltielshmid/TqdmSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/shaltielshmid/TqdmSharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.3.1</Version>
-    <AssemblyVersion>1.3.1.0</AssemblyVersion>
-    <FileVersion>1.3.1.0</FileVersion>
+    <Version>1.3.3</Version>
+    <AssemblyVersion>1.3.3.0</AssemblyVersion>
+    <FileVersion>1.3.3.0</FileVersion>
     <PackageReleaseNotes>
-        1.3.1: Fixed bug with bar.Reset()
-      </PackageReleaseNotes>
+        1.3.0: Added bar.Step() method for simplified progress tracking.
+    </PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
