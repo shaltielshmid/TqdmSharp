@@ -209,8 +209,8 @@ namespace TqdmSharp {
                 double remaining = (_total - current) / avgRate;
                 double percent = (current * 100.0) / _total;
                 
-                // If this will be the last update, then print a completed progress bar. 
-                if (_total - current <= _period) {
+                // If we've reached or exceeded the total, show a completed progress bar
+                if (current >= _total) {
                     percent = 100;
                     current = _total;
                     remaining = 0;
