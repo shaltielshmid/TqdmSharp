@@ -11,6 +11,7 @@ TqdmSharp is a C# implementation of the tqdm progress bar, providing an easy-to-
 - Real-time progress updates.
 - Supports exponential moving average for rate calculation.
 - Adjustable width and update frequency.
+- Works with redirected output or without a console: the bar rewinds its line with a carriage return instead of moving the cursor.
 
 ## Installation
 
