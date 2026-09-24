@@ -221,9 +221,6 @@ namespace TqdmSharp {
                 double fills = (double)current / _total * _width;
                 int ifills = (int)fills;
 
-                // Store the beginning of the line, so we can move back there for the next print
-                int curCursorTop = Console.CursorTop;
-
                 // Build our output string
                 // Start by typing "backspace" over the previous print, and then add a \r in case anything was added. 
                 var sb = new StringBuilder();
@@ -250,13 +247,24 @@ namespace TqdmSharp {
                 sb.Append(_label);
                 sb.Append(' ');
                 if (_useColor) sb.Append("\u001b[0m\u001b[32m\u001b[0m ");
-                Console.Write(sb.ToString() + new string(' ', Math.Max(0, _prevLength - sb.Length)));
-
-                // Move the cursor position back
-                Console.SetCursorPosition(0, curCursorTop);
+                WriteOverCurrentLine(sb.ToString() + new string(' ', Math.Max(0, _prevLength - sb.Length)));
 
                 // Store the length of the string so that we can clear it later
                 _prevLength = sb.Length;
+            }
+
+            // Redirected output has no cursor to move, and querying it throws when there is no console,
+            // so a carriage return rewinds the line instead.
+            private static void WriteOverCurrentLine(string text) {
+                if (Console.IsOutputRedirected) {
+                    Console.Write("\r" + text);
+                    return;
+                }
+
+                // Store the beginning of the line, so we can move back there for the next print
+                int curCursorTop = Console.CursorTop;
+                Console.Write(text);
+                Console.SetCursorPosition(0, curCursorTop);
             }
 
             /// <summary>
@@ -274,9 +282,14 @@ namespace TqdmSharp {
             /// <param name="text">The text to be printed on the new line.</param>
             public void PrintLine(string text) {
                 // Clear the previous line by resetting the cursor position and overwriting with spaces
-                Console.Write(new string(' ', Math.Min(_prevLength, Console.BufferWidth - 1))); // Clear the buffer
-                Console.CursorLeft = 0;
-                
+                if (Console.IsOutputRedirected) {
+                    Console.Write("\r" + new string(' ', _prevLength) + "\r");
+                }
+                else {
+                    Console.Write(new string(' ', Math.Min(_prevLength, Console.BufferWidth - 1))); // Clear the buffer
+                    Console.CursorLeft = 0;
+                }
+
                 // Print the new line of text
                 Console.WriteLine(text);
                 _prevLength = 0;

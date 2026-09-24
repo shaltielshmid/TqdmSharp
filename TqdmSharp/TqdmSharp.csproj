@@ -17,10 +17,11 @@
     <PackageProjectUrl>https://github.com/shaltielshmid/TqdmSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/shaltielshmid/TqdmSharp.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <Version>1.3.4</Version>
-    <AssemblyVersion>1.3.4.0</AssemblyVersion>
-    <FileVersion>1.3.4.0</FileVersion>
+    <Version>1.3.5</Version>
+    <AssemblyVersion>1.3.5.0</AssemblyVersion>
+    <FileVersion>1.3.5.0</FileVersion>
     <PackageReleaseNotes>
+        1.3.5: Fixed "The handle is invalid" crash when output is redirected or there is no console; the bar now rewinds its line with a carriage return there.
         1.3.4: Fixed unexpected progress bar display when calling Step() or Progress().
         1.3.0: Added bar.Step() method for simplified progress tracking.
     </PackageReleaseNotes>

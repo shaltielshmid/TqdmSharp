@@ -142,14 +142,53 @@ namespace TqdmSharp.Tests
             Assert.Equal(10, results[0]);
             Assert.Equal(20, results[1]);
             Assert.Equal(30, results[2]);
-            
+
             // The output should show progress for 0, 1, 2 items processed
             Assert.Contains("[ 0 / 3", output);
             Assert.Contains("[ 1 / 3", output);
             Assert.Contains("[ 2 / 3", output);
-            
+
             // Reset console output
             Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+        }
+
+        [Fact]
+        public void Progress_WhenOutputIsRedirected_RewindsTheLineWithCarriageReturn()
+        {
+            Assert.True(Console.IsOutputRedirected, "The test host is expected to capture stdout.");
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            var bar = new Tqdm.ProgressBar(total: 3, useColor: false, printsPerSecond: 100);
+            bar.Progress(0);
+            bar.Progress(1);
+            string[] lines = consoleOutput.ToString().Split('\r');
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+
+            Assert.Equal(3, lines.Length);
+            Assert.Equal("", lines[0]);
+            Assert.Contains("[ 0 / 3", lines[1]);
+            Assert.Contains("[ 1 / 3", lines[2]);
+        }
+
+        [Fact]
+        public void PrintLine_WhenOutputIsRedirected_ClearsTheBarAndPrintsTheText()
+        {
+            Assert.True(Console.IsOutputRedirected, "The test host is expected to capture stdout.");
+            var consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+
+            var bar = new Tqdm.ProgressBar(total: 3, useColor: false, printsPerSecond: 100);
+            bar.Progress(1);
+            int barLength = consoleOutput.ToString().TrimStart('\r').Length;
+            consoleOutput.GetStringBuilder().Clear();
+            bar.PrintLine("done");
+            string output = consoleOutput.ToString();
+
+            Console.SetOut(new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true });
+
+            Assert.Equal("\r" + new string(' ', barLength) + "\r" + "done" + Environment.NewLine, output);
         }
     }
 }
